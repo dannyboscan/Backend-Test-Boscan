@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,7 @@ else:
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     )
+
+SWAGGER_SETTINGS = {
+    "USE_SESSION_AUTH": False
+}
