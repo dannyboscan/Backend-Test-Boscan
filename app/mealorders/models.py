@@ -41,6 +41,7 @@ class SlackSetting(ModelBase):
     )
 
     class Meta:
+        ordering = ['-created']
         permissions = (
             ('admin_slacksetting', 'Admin Slack Setting'),
         )
@@ -61,6 +62,7 @@ class Dish(ModelBase):
     )
 
     class Meta:
+        ordering = ['-created']
         permissions = (
             ('admin_dish', 'Admin Dishes'),
         )

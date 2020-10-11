@@ -1,5 +1,3 @@
-import pytest
-
 from django.urls import reverse
 
 from mealorders.models import (
@@ -59,8 +57,36 @@ def test_get_single_salcksetting(admin_client):
     assert res.data["token"] == token
 
 
-def get_single_slacksetting_incorrect_id(admin_client):
+def test_get_single_slacksetting_incorrect_id(admin_client):
     res = admin_client.get(
         reverse("mealorders:api_slack_setting-detail", kwargs={'pk': 0})
     )
     assert res.status_code == 404
+
+
+def test_get_all_slacksetting(admin_client):
+    res = admin_client.get(
+        reverse("mealorders:api_slack_setting-list",)
+    )
+    assert res.status_code == 200
+
+
+def test_get_all_dish(admin_client):
+    res = admin_client.get(
+        reverse("mealorders:api_dishes-list",)
+    )
+    assert res.status_code == 200
+
+
+def test_get_all_menu(admin_client):
+    res = admin_client.get(
+        reverse("mealorders:api_menus-list",)
+    )
+    assert res.status_code == 200
+
+
+def test_get_all_menuorder(admin_client):
+    res = admin_client.get(
+        reverse("mealorders:api_orders-list",)
+    )
+    assert res.status_code == 200

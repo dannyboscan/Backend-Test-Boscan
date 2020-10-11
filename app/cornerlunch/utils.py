@@ -1,8 +1,11 @@
 import re
 from django.db.models import Q
 
+FINDTERMS = re.compile(r'"([^"]+)"|(\S+)').findall
+NORMSPACE = re.compile(r'\s{2,}').sub
 
-def normalize_query(query_string, findterms=re.compile(r'"([^"]+)"|(\S+)').findall, normspace=re.compile(r'\s{2,}').sub):
+
+def normalize_query(query_string, findterms=FINDTERMS, normspace=NORMSPACE):
     for t in findterms(query_string):
         yield normspace(' ', (t[0] or t[1]).strip())
 
