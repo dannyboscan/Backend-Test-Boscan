@@ -128,10 +128,7 @@ class EmployeeOrder(ModelBase):
     )
 
     def __str__(self):
-        return "%(name)s - %(email)s" % {
-            'name': self.name,
-            'email': self.email
-        }
+        return f"{self.full_name} - {self.email}"
 
 
 class DishOrderManager(models.Manager):
