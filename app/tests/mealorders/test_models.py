@@ -113,4 +113,6 @@ class TestModels:
         assert dish_order.employee_order_id == employee_order.id
         assert dish_order.dish_id == dish.id
         assert dish_order.quantity == 1
+        assert dish_order.created
+        assert dish_order.updated
         assert str(dish_order) == dish.name
