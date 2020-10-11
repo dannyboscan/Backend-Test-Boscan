@@ -170,3 +170,7 @@ else:
 SWAGGER_SETTINGS = {
     "USE_SESSION_AUTH": False
 }
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_ENABLE_UTC = True

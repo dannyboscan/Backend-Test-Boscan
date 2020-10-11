@@ -13,3 +13,5 @@ pytest-cov==2.10.1
 flake8==3.8.4
 drf-yasg==1.17.1
 coreapi==2.3.3
+celery==5.0.0
+redis==3.5.3
