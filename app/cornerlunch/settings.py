@@ -179,3 +179,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_ENABLE_UTC = True
 
 CORS_ORIGIN_ALLOW_ALL = True if DEBUG else False
+
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS': True,
+}
