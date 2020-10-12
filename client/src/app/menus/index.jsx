@@ -108,7 +108,7 @@ class Menu extends Component {
                                 No existe ningun menu creado
                             </div>
                         ): (
-                            <span>asd</span>
+                            <span>Mostrar menus</span>
                         )}
                     </div>
                 </div>
