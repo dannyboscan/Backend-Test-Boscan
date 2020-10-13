@@ -233,7 +233,6 @@ def test_place_order(client):
     menu = Menu.objects.create(date=pendulum.now().date())
     menu.dishes.add(*dishes)
 
-    print (dishes[0].id)
     res = client.post(
         reverse("mealorders:api_employee_order-list"),
         json.dumps({
@@ -248,6 +247,5 @@ def test_place_order(client):
         content_type='application/json'
     )
 
-    print (res.data)
     assert res.status_code == 201
     assert EmployeeOrder.objects.exists()

@@ -2,7 +2,6 @@ import pytest
 import pendulum
 import uuid
 from django.core.exceptions import ValidationError
-from slack.errors import SlackApiError
 from mealorders.models import (
     Menu, SlackSetting
 )
@@ -37,5 +36,4 @@ def test_send_slack_reminder_invilid_token():
     )
     menu = Menu.objects.create(date=pendulum.now().date())
 
-    # with pytest.raises(SlackApiError) as error:
     assert send_slack_reminder(menu.id) is None
