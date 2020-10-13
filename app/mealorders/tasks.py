@@ -21,12 +21,12 @@ def send_slack_reminder(menu_id):
     ).first()
 
     if not menu:
-        raise ValidationError(detail="No menu found for today")
+        raise ValidationError("No menu found for today")
 
     slack_setting = SlackSetting.objects.first()
 
     if not slack_setting:
-        raise ValidationError(detail="No Slack setting found")
+        raise ValidationError("No Slack setting found")
 
     mmessage = MenuMessage(menu, slack_setting.channel_id)
     message = mmessage.get_message()
@@ -36,7 +36,7 @@ def send_slack_reminder(menu_id):
         slack_client.chat_postMessage(**message)
     except SlackApiError as e:
         assert e.response["error"]
-    finally:
+    else:
         menu.reminder_sent = True
         menu.last_reminder = pendulum.now()
         menu.save()
