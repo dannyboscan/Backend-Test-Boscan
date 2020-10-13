@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import {Route, Switch} from "react-router";
 import Http404 from '../components/Http404';
 import NavBar from '../components/NavBar';
-import Orders from './orders';
 import LoginForm from '../components/LoginForm';
+import Orders from './orders';
 import Menu from './menus';
+import Settings from './settings';
 import axios from 'axios';
 
 
@@ -92,7 +93,16 @@ class App extends Component {
                                         exact
                                         component={() => (
                                             <Menu
-                                                // onSubmit={this.onSubmitSignIn}
+                                                isAuthenticated={isAuthenticated}
+                                                user={this.state.user}
+                                            />
+                                        )}
+                                    />
+                                    <Route
+                                        path={"/settings/"}
+                                        exact
+                                        component={() => (
+                                            <Settings
                                                 isAuthenticated={isAuthenticated}
                                                 user={this.state.user}
                                             />

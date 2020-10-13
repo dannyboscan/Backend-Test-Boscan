@@ -16,7 +16,7 @@ else:
 
 app_name = "melaorders"
 
-router.register(r'slack-seting', api.SlackSettingViewSet, 'api_slack_setting')
+router.register(r'slack-setting', api.SlackSettingViewSet, 'api_slack_setting')
 router.register(r'dishes', api.DishViewSet, 'api_dishes')
 router.register(r'menus', api.MenuViewSet, 'api_menus')
 router.register(r'orders', api.EmployeeOrderViewSet, 'api_orders')

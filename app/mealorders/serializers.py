@@ -27,11 +27,11 @@ class MenuSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'dishes', 'dishes_data', 'date', 'reminder_sent', 'last_reminder'
         )
-        read_only_fields = ('reminder_sent', 'last_reminder')
+        read_only_fields = ('last_reminder', )
 
 
 class DishOrderSerializer(serializers.ModelSerializer):
-    dish_data = DishSerializer(source="dishes", read_only=True)
+    dish_data = DishSerializer(source="dish", read_only=True)
 
     class Meta:
         model = DishOrder

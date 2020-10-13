@@ -4,9 +4,15 @@ from cornerlunch.settings import DEBUG
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import DjangoModelPermissions, AllowAny
 from rest_framework.exceptions import ValidationError
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from drf_yasg.utils import swagger_auto_schema
+from slack import WebClient
+from slack.errors import SlackApiError
 
 from cornerlunch.settings import ORDER_LIMIT_HOUR
-
+from mealorders.tasks import send_slack_reminder
 from mealorders.filters import (
     DishFilter, MenuFilter, EmployeeOrderFilter
 )
@@ -49,6 +55,27 @@ class SlackSettingViewSet(viewsets.ModelViewSet):
     permission_classes = (BaseDjangoModelPermissions, )
     queryset = SlackSetting.objects.all()
 
+    @action(
+        methods=['POST', ],
+        detail=False,
+        permission_classes=(BaseDjangoModelPermissions, )
+    )
+    @swagger_auto_schema(
+        operation_description="List channels from a slack token"
+    )
+    def channels(self, request):
+        token = request.data.get('token')
+        if not token:
+            raise ValidationError(detail="Token is required")
+
+        slack_client = WebClient(token=token)
+        try:
+            res = slack_client.conversations_list(exclude_archived=1)
+        except SlackApiError as e:
+            return Response(e.response.data)
+
+        return Response(res.data)
+
 
 class DishViewSet(viewsets.ModelViewSet):
     serializer_class = DishSerializer
@@ -61,6 +88,14 @@ class MenuViewSet(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     permission_classes = (BaseDjangoModelPermissions, )
     filterset_class = MenuFilter
+
+    def perform_create(self, serializer):
+        reminder_sent = serializer.validated_data.get('reminder_sent', False)
+        menu = serializer.save(reminder_sent=False)
+
+        # Aqui se podria validar la hora para enviar el mensaje a slack pero para hacer pruebas no lo tome en cuenta
+        if reminder_sent and menu.date == pendulum.now().date():
+            send_slack_reminder.apply_async(args=[menu.id])
 
     def get_queryset(self):
         queryset = Menu.objects.prefetch_related(
@@ -97,6 +132,7 @@ class EmployeeMenuOrderViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet)
 
     def perform_create(self, serializer):
         if DEBUG:
+            # Para poder hacer pruebas, se permite hacer pedidos a cualquier hora
             serializer.save()
         else:
             menu = serializer.validated_data.get('menu')

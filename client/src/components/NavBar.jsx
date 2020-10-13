@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -26,13 +26,16 @@ const NavBar = (props) => {
                         {!props.isAuthenticated ? (
                             <Link to="/signin/" className="navbar-item">Sign in</Link>
                         ): (
-                        <a
-                            href="/"
-                            onClick={e => {e.preventDefault(); props.logoutUser();}}
-                            className="navbar-item link"
-                        >
-                            Sign Out
-                        </a>
+                            <Fragment>
+                                <Link to="/settings/" className="navbar-item">Settings</Link>
+                                <a
+                                    href="/"
+                                    onClick={e => {e.preventDefault(); props.logoutUser();}}
+                                    className="navbar-item link"
+                                >
+                                    Sign Out
+                                </a>
+                            </Fragment>
                         )}
                     </div>
                 </div>

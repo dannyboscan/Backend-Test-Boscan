@@ -75,7 +75,7 @@ class MenuModalForm extends Component {
                             {props => {
                                 const {
                                     values, touched, errors, isSubmitting,
-                                    handleBlur, handleSubmit,
+                                    handleChange, handleBlur, handleSubmit,
                                     setFieldValue
                                 } = props;
 
@@ -131,6 +131,19 @@ class MenuModalForm extends Component {
                                                 <div className="input-feedback">{errors.dishes}</div>
                                             )}
                                         </div>
+
+                                        <div className="field">
+                                            <label className="checkbox">
+                                                <input
+                                                    name="reminder_sent"
+                                                    type="checkbox"
+                                                    value={values.username}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                /> Enviar notificación
+                                            </label>
+                                        </div>
+
                                         <div className="field is-grouped is-grouped-right">
                                             <div className="buttons">
                                                 <button

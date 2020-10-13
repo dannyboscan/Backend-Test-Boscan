@@ -32,7 +32,7 @@ class MenuFilter(filters.FilterSet):
     dishes_in = NumberInFilter(field_name='dishes__pk', label='Dishes', lookup_expr='in')
 
     class Meta:
-        models = Menu
+        model = Menu
         fields = ('date', 'dishes_in')
 
 

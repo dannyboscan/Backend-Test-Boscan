@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
@@ -60,7 +60,8 @@ class Menu extends Component {
             method: "post",
             data: {
                 date: moment(values.date).format("YYYY-MM-DD"),
-                dishes: values.dishes.map(d => d.value)
+                dishes: values.dishes.map(d => d.value),
+                reminder_sent: values.reminder_sent
             },
             headers: {
                 'Content-Type': 'application/json',
@@ -101,17 +102,58 @@ class Menu extends Component {
                 </div>
                 <hr />
 
-                <div className="columns">
-                    <div className="column">
-                        {menus && menus.count === 0 ? (
-                            <div className="notification is-warning">
-                                No existe ningun menu creado
-                            </div>
-                        ): (
-                            <span>Mostrar menus</span>
-                        )}
+                {menus !== null && (
+                    <div className="columns">
+                        <div className="column">
+                            {menus.count === 0 ? (
+                                <div className="notification is-warning">
+                                    No existe ningun menu creado
+                                </div>
+                            ): (
+                                <table className="table is-hoverable is-fullwidth">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Platos</th>
+                                            <th>Mesaje enviado</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {menus.results.map(menu => (
+                                            <tr key={menu.id}>
+                                                <td>{moment(menu.date).format('L')}</td>
+                                                <td>
+                                                    {menu.dishes_data.map(dish => (
+                                                        <span key={dish.id} className="tag is-primary is-light">{dish.name}</span>
+                                                    ))}
+                                                </td>
+                                                <td>
+                                                    {menu.reminder_sent? (
+                                                        <Fragment>
+                                                            <span className="icon has-text-success">
+                                                                Si
+                                                            </span>
+                                                            {menu.last_reminder && (
+                                                                <span>
+                                                                    {moment(menu.last_reminder).format("LL")}
+                                                                </span>
+                                                            )}
+                                                        </Fragment>
+                                                    ): (
+                                                        <span className="icon has-text-danger">
+                                                            No
+                                                        </span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 <div>
                     <Modal
