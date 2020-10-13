@@ -6,7 +6,9 @@ import NavBar from '../components/NavBar';
 import LoginForm from '../components/LoginForm';
 import Orders from './orders';
 import Menu from './menus';
+import Dishes from './dishes';
 import Settings from './settings';
+import Employee from './employee';
 import axios from 'axios';
 
 
@@ -16,7 +18,6 @@ class App extends Component {
     };
 
     logoutUser = () => {
-        console.log('logout: ');
         window.localStorage.removeItem('refreshToken');
         this.setState({user: null});
     };
@@ -99,12 +100,30 @@ class App extends Component {
                                         )}
                                     />
                                     <Route
+                                        path={"/dishes/"}
+                                        exact
+                                        component={() => (
+                                            <Dishes
+                                                isAuthenticated={isAuthenticated}
+                                                user={this.state.user}
+                                            />
+                                        )}
+                                    />
+                                    <Route
                                         path={"/settings/"}
                                         exact
                                         component={() => (
                                             <Settings
                                                 isAuthenticated={isAuthenticated}
                                                 user={this.state.user}
+                                            />
+                                        )}
+                                    />
+                                    <Route
+                                        path={"/menu/:token([0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12})?/"}
+                                        exact
+                                        component={() => (
+                                            <Employee
                                             />
                                         )}
                                     />

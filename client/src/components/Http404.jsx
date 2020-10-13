@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 class Http404 extends Component {
     render() {
         return (
-            <section class="section is-medium">
-                <div class="container">
-                    <div class="columns is-vcentered">
-                        <div class="column has-text-centered">
-                            <h1 class="title">404 Page Not Found</h1>
-                            <a href="/" class="button">Home</a>
+            <section className="section is-medium">
+                <div className="container">
+                    <div className="columns is-vcentered">
+                        <div className="column has-text-centered">
+                            <h1 className="title">404 Page Not Found</h1>
+                            <a href="/" className="button">Home</a>
                         </div>
                     </div>
                 </div>

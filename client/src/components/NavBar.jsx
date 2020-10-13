@@ -17,10 +17,13 @@ const NavBar = (props) => {
                     </Link>
                 </div>
                 <div className="navbar-menu">
-                    <div className="navbar-start">
-                        <Link to="/" className="navbar-item">Ordenes</Link>
-                        <Link to="/menus/" className="navbar-item">Menus</Link>
-                    </div>
+                    {props.isAuthenticated && (
+                        <div className="navbar-start">
+                            <Link to="/" className="navbar-item">Ordenes</Link>
+                            <Link to="/menus/" className="navbar-item">Menus</Link>
+                            <Link to="/dishes/" className="navbar-item">Platos</Link>
+                        </div>
+                    )}
 
                     <div className="navbar-end">
                         {!props.isAuthenticated ? (
