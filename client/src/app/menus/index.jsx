@@ -73,6 +73,19 @@ class Menu extends Component {
         }).catch(err => console.log('err: ', err));
     };
 
+    sendReminder = menuId => {
+        return axios({
+            url: `${process.env.REACT_APP_MENUS_URL}${menuId}/send_reminder/`,
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.props.user.access}`
+            }
+        }).then(({data}) => {
+            console.log('data: ', data);
+        }).catch(err => console.log('err: ', err));
+    };
+
     render() {
         if (!this.props.isAuthenticated) {
             return (<Redirect to="/signin/" />);
@@ -116,6 +129,7 @@ class Menu extends Component {
                                             <th>Fecha</th>
                                             <th>Platos</th>
                                             <th>Mesaje enviado</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
@@ -144,6 +158,18 @@ class Menu extends Component {
                                                         <span className="icon has-text-danger">
                                                             No
                                                         </span>
+                                                    )}
+                                                </td>
+
+                                                <td>
+                                                    {moment(menu.date).isSame(moment(), 'day') && (
+                                                        <button
+                                                            className="button is-success is-light is-small"
+                                                            type="button"
+                                                            onClick={() => this.sendReminder(menu.id)}
+                                                        >
+                                                            Enviar mensaje
+                                                        </button>
                                                     )}
                                                 </td>
                                             </tr>

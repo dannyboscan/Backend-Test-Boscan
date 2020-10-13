@@ -2,10 +2,11 @@ import pendulum
 
 from cornerlunch.settings import DEBUG
 from rest_framework import viewsets, mixins
-from rest_framework.permissions import DjangoModelPermissions, AllowAny
-from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import DjangoModelPermissions, AllowAny, IsAuthenticated
+from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.generics import get_object_or_404 as api_get_object_or_404
 
 from drf_yasg.utils import swagger_auto_schema
 from slack import WebClient
@@ -58,12 +59,16 @@ class SlackSettingViewSet(viewsets.ModelViewSet):
     @action(
         methods=['POST', ],
         detail=False,
-        permission_classes=(BaseDjangoModelPermissions, )
+        permission_classes=(IsAuthenticated, )
     )
     @swagger_auto_schema(
         operation_description="List channels from a slack token"
     )
     def channels(self, request):
+        permissions = ['mealorders.admin_slacksetting', 'mealorders.view_slacksetting']
+        if not any(request.user.has_perm(perm) for perm in permissions):
+            raise PermissionDenied()
+
         token = request.data.get('token')
         if not token:
             raise ValidationError(detail="Token is required")
@@ -96,6 +101,26 @@ class MenuViewSet(viewsets.ModelViewSet):
         # Aqui se podria validar la hora para enviar el mensaje a slack pero para hacer pruebas no lo tome en cuenta
         if reminder_sent and menu.date == pendulum.now().date():
             send_slack_reminder.apply_async(args=[menu.id])
+
+    @action(
+        methods=['POST', ],
+        detail=True,
+        permission_classes=(IsAuthenticated, )
+    )
+    @swagger_auto_schema(
+        operation_description="Send menu reminder to Slack",
+    )
+    def send_reminder(self, request, pk=None):
+        permissions = ['mealorders.admin_menu', 'mealorders.view_menu']
+        if not any(request.user.has_perm(perm) for perm in permissions):
+            raise PermissionDenied()
+
+        menu = api_get_object_or_404(Menu, id=pk)
+        if menu.date == pendulum.now().date():
+            send_slack_reminder.apply_async(args=[menu.id])
+            return Response({"ok": True})
+        else:
+            return Response({"ok": False})
 
     def get_queryset(self):
         queryset = Menu.objects.prefetch_related(
