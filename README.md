@@ -2,7 +2,7 @@
 Basic management system to coordinate the meal delivery for Cornershop employees.
 
 ## What you'll need before you get started:
-1. You'll need to install [docker](docker|https://www.docker.com/get-started)
+1. You'll need to [install docker](https://www.docker.com/get-started)
 2. Clone this repo
 ````sh
 $ git clone https://github.com/dannyboscan/Backend-Test-Boscan.git
