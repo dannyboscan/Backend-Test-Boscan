@@ -62,19 +62,19 @@ class Orders extends Component {
             <div>
                 <h1 className="title is-1" style={{marginBottom: 0}}>
                     Ordenes
-                </h1> <small>Aqui podras encontrar información de los pedidos de hoy</small>
+                </h1> <small>Aquí podrás encontrar información de los pedidos de hoy</small>
                 <hr />
 
                 {!this.state.menu ? (
                     <div className="notification is-warning">
-                        No se encontro un menu para hoy
+                        No se encontro un menú para hoy
                     </div>
                 ) : (
                     <Fragment>
                         <div className="columns">
                             <div className="column">
                                 <div className="box">
-                                    <h3 className="title is-3" style={{marginTop: 0, marginBottom: 10}}>Menu de Hoy</h3>
+                                    <h3 className="title is-3" style={{marginTop: 0, marginBottom: 10}}>Menú de Hoy</h3>
                                     <div className="content">
                                         <ol type="1">
                                             {this.state.menu.dishes_data.map(dish => (

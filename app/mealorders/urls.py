@@ -14,7 +14,7 @@ if DEBUG:
 else:
     router = SimpleRouter()
 
-app_name = "melaorders"
+app_name = "mealorders"
 
 router.register(r'slack-setting', api.SlackSettingViewSet, 'api_slack_setting')
 router.register(r'dishes', api.DishViewSet, 'api_dishes')

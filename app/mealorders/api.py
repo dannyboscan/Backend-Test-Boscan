@@ -1,6 +1,6 @@
 import pendulum
 
-from cornerlunch.settings import DEBUG
+from cornerlunch.settings import DEBUG, ORDER_LIMIT_HOUR
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import DjangoModelPermissions, AllowAny, IsAuthenticated
 from rest_framework.exceptions import ValidationError, PermissionDenied
@@ -98,7 +98,7 @@ class MenuViewSet(viewsets.ModelViewSet):
         reminder_sent = serializer.validated_data.get('reminder_sent', False)
         menu = serializer.save(reminder_sent=False)
 
-        # Aqui se podria validar la hora para enviar el mensaje a slack pero para hacer pruebas no lo tome en cuenta
+        # Here you could validate the time to send the message to slack, but I don't take it into account for testing
         if reminder_sent and menu.date == pendulum.now().date():
             send_slack_reminder.apply_async(args=[menu.id])
 
@@ -156,14 +156,11 @@ class EmployeeMenuOrderViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet)
     queryset = EmployeeOrder.objects.select_related('menu').prefetch_related('dishes').all()
 
     def perform_create(self, serializer):
-        if DEBUG:
-            # Para poder hacer pruebas, se permite hacer pedidos a cualquier hora
+        menu = serializer.validated_data.get('menu')
+
+        limit_datetime = pendulum.now().at(int(ORDER_LIMIT_HOUR), 0, 0)
+        # To be able to make tests, it is allowed to order at any time with DEBUG
+        if DEBUG or (menu.pdate == limit_datetime.date() and pendulum.now() <= limit_datetime):
             serializer.save()
         else:
-            menu = serializer.validated_data.get('menu')
-
-            limit_datetime = pendulum.now().at(int(ORDER_LIMIT_HOUR), 0, 0)
-            if menu.pdate == limit_datetime.date() and pendulum.now() <= limit_datetime:
-                serializer.save()
-            else:
-                raise ValidationError(detail="Orders are not accepted after 11:00")
+            raise ValidationError(detail=f"Orders are not accepted after {ORDER_LIMIT_HOUR}:00")
