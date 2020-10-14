@@ -49,3 +49,8 @@ The HTML version can be viewed within the newly created "htmlcov" directory.
 ```sh
 $ open app/htmlcov/index.html
 ```
+
+## Stop and remove containers
+```sh
+$ docker-compose down -v
+```
