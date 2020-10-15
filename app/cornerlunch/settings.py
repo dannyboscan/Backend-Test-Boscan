@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
@@ -178,6 +178,7 @@ SWAGGER_SETTINGS = {
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'America/Santiago'
 
 CORS_ORIGIN_ALLOW_ALL = True if DEBUG else False
 
