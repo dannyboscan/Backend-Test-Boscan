@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
+import {axiosError} from '../../utils';
 
 import DishModalForm from './DishModalForm';
 
@@ -47,7 +48,7 @@ class Dishes extends Component {
                 }
             }).then(({data}) => {
                 this.setState({dishes: data})
-            }).catch(err => console.log('err: ', err))
+            }).catch(axiosError)
         }
     };
 
@@ -77,7 +78,7 @@ class Dishes extends Component {
             resetForm();
             setSubmitting(false);
             this.toggleDishModalForm(false);
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     onDeleteDish = dishId => {
@@ -90,7 +91,7 @@ class Dishes extends Component {
             }
         }).then(({data}) => {
             this.getDishes();
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     render() {

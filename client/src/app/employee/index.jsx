@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Select from 'react-select';
+import {axiosError} from '../../utils';
 
 
 const dishOptionsMap = c => ({
@@ -31,7 +32,7 @@ class Employee extends Component {
                 menu: data,
                 dishes: data.dishes_data.map(dishOptionsMap)
             });
-        }).catch(err => console.log('err: ', err)).then(()=> {
+        }).catch(axiosError).then(()=> {
             this.setState({loading: false});
         })
     };
@@ -51,7 +52,7 @@ class Employee extends Component {
         }).then(res => {
             resetForm();
             setSubmitting(false);
-        }).catch(err => console.log('err: ', err))
+        }).catch(axiosError);
     }
 
     render() {

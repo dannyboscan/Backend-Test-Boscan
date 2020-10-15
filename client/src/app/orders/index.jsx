@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import {axiosError} from '../../utils';
+
 
 class Orders extends Component {
     state = {
@@ -47,9 +49,9 @@ class Orders extends Component {
                         }
                     }).then(({data}) => {
                         this.setState({orders: data});
-                    }).catch(err => console.log('err: ', err))
+                    }).catch(axiosError)
                 }
-            }).catch(err => console.log('err: ', err))
+            }).catch(axiosError)
         }
     };
 

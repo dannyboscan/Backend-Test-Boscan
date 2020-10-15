@@ -5,6 +5,8 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import MenuModalForm from './MenuModalForm';
 import moment from 'moment';
+import {axiosError} from '../../utils';
+
 
 Modal.setAppElement(document.getElementById("root"));
 
@@ -50,7 +52,7 @@ class Menu extends Component {
                 }
             }).then(({data}) => {
                 this.setState({menus: data})
-            }).catch(err => console.log('err: ', err))
+            }).catch(axiosError);
         }
     };
 
@@ -70,7 +72,7 @@ class Menu extends Component {
         }).then(({data}) => {
             this.getMenus();
             this.toggleMenuModalForm(false);
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     sendReminder = menuId => {
@@ -83,7 +85,7 @@ class Menu extends Component {
             }
         }).then(({data}) => {
             console.log('data: ', data);
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     render() {

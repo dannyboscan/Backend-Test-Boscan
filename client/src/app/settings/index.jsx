@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Select from 'react-select';
+import Swal from 'sweetalert2'
+import {axiosError} from '../../utils';
 
 
 const channelOptionsMap = c => ({
@@ -46,7 +48,7 @@ class Settings extends Component {
                 } else {
                     this.setState({loading: false});
                 }
-            }).catch(err => console.log('err: ', err));
+            }).catch(axiosError);
         }
     };
 
@@ -67,7 +69,7 @@ class Settings extends Component {
             } else {
                 this.setState({error: data.error, channels: []});
             }
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     onSubmit = (values, { setSubmitting, resetForm }) => {
@@ -85,7 +87,12 @@ class Settings extends Component {
             }
         }).then(({data}) => {
             setSubmitting(false);
-        }).catch(err => console.log('err: ', err));
+            Swal.fire(
+                'Slack setting',
+                'The configuration was saved successfully',
+                'success'
+            )
+        }).catch(axiosError);
     };
 
     render() {

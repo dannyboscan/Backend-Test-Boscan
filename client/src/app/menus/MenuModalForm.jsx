@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AsyncSelect from 'react-select/async';
 import Portal from "@atlaskit/portal";
+import {axiosError} from '../../utils';
 
 
 const dishOptionsMap = dish => ({
@@ -42,7 +43,7 @@ class MenuModalForm extends Component {
             if (data.count > 0) {
                 return data.results.map(dishOptionsMap);
             }
-        }).catch(err => console.log('err: ', err));
+        }).catch(axiosError);
     };
 
     render() {

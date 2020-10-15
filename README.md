@@ -23,7 +23,7 @@ $ docker-compose exec mealorders python manage.py createsuperuser --username <us
 ````
 
 Navigate to [http://localhost:3000/](http://localhost:3000/) within your browser of choice to view the client app
-and [http://localhost:8000/diocs/](http://localhost:8000/docs/) to view the **Cornerlunch API** Docs.
+and [http://localhost:8000/docs/](http://localhost:8000/docs/) to view the **Cornerlunch API** Docs.
 
 
 > Don't forget sign in with your admin user credentials
