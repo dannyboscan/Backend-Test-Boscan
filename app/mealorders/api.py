@@ -1,5 +1,6 @@
 import pendulum
 
+from django.db.models.deletion import ProtectedError
 from cornerlunch.settings import DEBUG, ORDER_LIMIT_HOUR
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import DjangoModelPermissions, AllowAny, IsAuthenticated
@@ -87,6 +88,18 @@ class DishViewSet(viewsets.ModelViewSet):
     permission_classes = (BaseDjangoModelPermissions, )
     queryset = Dish.objects.all()
     filterset_class = DishFilter
+
+    def perform_destroy(self, instance):
+        try:
+            instance.delete()
+        except ProtectedError as e:
+            raise ValidationError(
+                detail=("The Dish '%(dish)s' cannot be removed "
+                        "because it was ordered by an employee"
+                        ) % {
+                    "dish": str(instance)
+                }
+            )
 
 
 class MenuViewSet(viewsets.ModelViewSet):
