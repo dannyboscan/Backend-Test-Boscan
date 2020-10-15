@@ -32,6 +32,8 @@ and [http://localhost:8000/docs/](http://localhost:8000/docs/) to view the **Cor
 ## Application Setup
 Navigate to [http://localhost:3000/settings/](http://localhost:3000/settings/) to setup the Slack App with your bot token previously copied and saved, then choose one channel of your preference for notifications.
 
+> Note: If you don't receive the slack message please add the created App to the channel
+
 
 ## Employee view to place a order
 > Before place a order, you'll need to create a menu, to do that navigate to [http://localhost:3000/menus/](http://localhost:3000/menus/)
