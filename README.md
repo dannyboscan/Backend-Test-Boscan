@@ -7,7 +7,7 @@ Basic management system to coordinate the meal delivery for Cornershop employees
 ````sh
 $ git clone https://github.com/dannyboscan/Backend-Test-Boscan.git
 ````
-3. [Create a Slack app](https://github.com/slackapi/python-slackclient/blob/main/tutorial/01-creating-the-slack-app.md), the app created must have the following permissions *chat:write*, *im:write* and *channels:read*
+3. [Create a Slack app](https://github.com/slackapi/python-slackclient/blob/main/tutorial/01-creating-the-slack-app.md), the app created must have the following permissions *chat:write*, *im:write*, *channels:join* and *channels:read*
 4. Finally copy and save your bot token. You'll need this to setup the app.
 
 ## Startup the application

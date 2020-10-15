@@ -12,14 +12,14 @@ from mealorders.models import (
 def test_add_slacksetting(admin_client):
     assert not SlackSetting.objects.exists()
 
-    channel_id = "C01234567"
+    channel_id = "C01CCKN2S7M"
 
     res = admin_client.post(
         reverse("mealorders:api_slack_setting-list"),
         {
-            "token": "a96b4918-d45a-4b8e-85e4-7ba08dd24e65",
+            "token": "xoxb-1420668090691-1405724482855-RWdZwDjjmD22pFIfSgr4a3ma",
             "channel_id": channel_id,
-            "channel_name": "channelname"
+            "channel_name": channel_id
         },
         content_type="application/json"
     )

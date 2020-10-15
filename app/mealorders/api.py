@@ -1,6 +1,7 @@
 import pendulum
 
 from django.db.models.deletion import ProtectedError
+from django.db.transaction import atomic
 from cornerlunch.settings import DEBUG, ORDER_LIMIT_HOUR
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import DjangoModelPermissions, AllowAny, IsAuthenticated
@@ -56,6 +57,15 @@ class SlackSettingViewSet(viewsets.ModelViewSet):
     serializer_class = SlackSettingSerializer
     permission_classes = (BaseDjangoModelPermissions, )
     queryset = SlackSetting.objects.all()
+
+    @atomic
+    def perform_create(self, serializer):
+        slack_setting = serializer.save()
+        try:
+            slack_client = WebClient(token=slack_setting.token)
+            slack_client.conversations_join(channel=slack_setting.channel_id)
+        except SlackApiError as e:
+            raise ValidationError(detail=f"{e.response.data['error']} {e.response.get('needed', '')}")
 
     @action(
         methods=['POST', ],

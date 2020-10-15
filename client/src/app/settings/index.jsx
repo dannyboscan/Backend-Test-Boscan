@@ -73,9 +73,13 @@ class Settings extends Component {
     };
 
     onSubmit = (values, { setSubmitting, resetForm }) => {
+        const {setting} = this.state;
+
         return axios({
-            url: process.env.REACT_APP_SLACK_SETTINGS_URL,
-            method: "post",
+            url: setting && setting.id ? 
+                `${process.env.REACT_APP_SLACK_SETTINGS_URL}${setting.id}/`:
+                process.env.REACT_APP_SLACK_SETTINGS_URL,
+            method: setting && setting.id ? "patch": "post",
             data: {
                 token: values.token,
                 channel_id: values.channel.value,
