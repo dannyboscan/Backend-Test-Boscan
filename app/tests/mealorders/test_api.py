@@ -5,7 +5,7 @@ import pytest
 from django.urls import reverse
 from django.core import serializers
 from mealorders.models import (
-    SlackSetting, Dish, Menu, EmployeeOrder
+    SlackSetting, Dish, Menu, EmployeeOrder, DishOrder
 )
 
 
@@ -131,9 +131,41 @@ def test_get_all_slacksetting(admin_client):
 
 def test_get_all_dishes(admin_client):
     res = admin_client.get(
-        reverse("mealorders:api_dishes-list",)
+        reverse("mealorders:api_dishes-list")
     )
     assert res.status_code == 200
+
+
+def test_delete_dish(admin_client):
+    dish = Dish.objects.create(name="Pastel de choclo, Ensalada y Postre")
+    res = admin_client.delete(
+        reverse("mealorders:api_dishes-detail", kwargs={"pk": dish.pk})
+    )
+
+    assert res.status_code == 204
+    assert not Dish.objects.filter(pk=dish.pk).exists()
+
+
+def test_delete_dish_protected(admin_client):
+    dish = Dish.objects.create(name="Pastel de choclo, Ensalada y Postre")
+    menu = Menu.objects.create(date=pendulum.now().date())
+    menu.dishes.add(dish)
+
+    employee_order = EmployeeOrder.objects.create(
+        menu=menu,
+        full_name="Danny Boscan",
+        email="dannyboscan@gmail.com"
+    )
+    DishOrder.objects.create(
+        employee_order=employee_order,
+        dish=dish
+    )
+
+    res = admin_client.delete(
+        reverse("mealorders:api_dishes-detail", kwargs={"pk": dish.pk})
+    )
+
+    assert res.status_code == 400
 
 
 def test_get_filtered_dishes(admin_client):
