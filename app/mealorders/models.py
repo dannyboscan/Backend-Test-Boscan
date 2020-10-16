@@ -140,6 +140,7 @@ class DishOrderManager(models.Manager):
         )
 
 
+# This model it was created thinking in scalability, to allow employee order multiple dishes
 class DishOrder(ModelBase):
     employee_order = models.ForeignKey(
         EmployeeOrder,

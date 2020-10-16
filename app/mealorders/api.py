@@ -14,7 +14,6 @@ from drf_yasg.utils import swagger_auto_schema
 from slack import WebClient
 from slack.errors import SlackApiError
 
-from cornerlunch.settings import ORDER_LIMIT_HOUR
 from mealorders.tasks import send_slack_reminder
 from mealorders.filters import (
     DishFilter, MenuFilter, EmployeeOrderFilter
@@ -102,7 +101,7 @@ class DishViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         try:
             instance.delete()
-        except ProtectedError as e:
+        except ProtectedError:
             raise ValidationError(
                 detail=("The Dish '%(dish)s' cannot be removed "
                         "because it was ordered by an employee"
